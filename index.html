@@ -1,0 +1,373 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>每日一策 · AI 提示词每日精选</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Noto+Sans+SC:wght@400;500;600;700&family=IBM+Plex+Mono:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --bg: #030014;
+    --cyan: #2EA7FF;
+    --purple: #9479FF;
+    --green: #13DEBA;
+    --white: #FFFFFF;
+    --text-2: #A9A9C2;
+    --text-3: #7E7E9C;
+    --grad: linear-gradient(135deg, #2EA7FF 0%, #9479FF 100%);
+    --stroke: rgba(255, 255, 255, 0.12);
+    --stroke-soft: rgba(255, 255, 255, 0.08);
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: "Noto Sans SC", "Inter", system-ui, sans-serif;
+    background: var(--bg); color: var(--white);
+    overflow-x: hidden; line-height: 1.5;
+  }
+  .aurora { position: fixed; inset: 0; z-index: -2; overflow: hidden; background: var(--bg); }
+  .aurora span { position: absolute; border-radius: 50%; filter: blur(90px); opacity: 0.55; }
+  .a-cyan { width: 1200px; height: 820px; left: 120px; top: -260px;
+    background: radial-gradient(circle, rgba(46,167,255,0.55) 0%, rgba(26,26,64,0.12) 65%, transparent 100%); }
+  .a-purple { width: 900px; height: 700px; left: -200px; top: 80px;
+    background: radial-gradient(circle, rgba(148,121,255,0.42) 0%, rgba(51,38,115,0.10) 60%, transparent 100%); }
+  .a-green { width: 800px; height: 640px; right: -80px; top: 240px;
+    background: radial-gradient(circle, rgba(19,222,186,0.30) 0%, rgba(13,102,89,0.08) 60%, transparent 100%); }
+  .dots { position: fixed; inset: 0; z-index: -1; pointer-events: none;
+    background-image: radial-gradient(rgba(255,255,255,0.06) 1.4px, transparent 1.4px);
+    background-size: 36px 36px;
+    -webkit-mask-image: radial-gradient(circle at 50% 30%, transparent 20%, #000 100%);
+    mask-image: radial-gradient(circle at 50% 30%, transparent 20%, #000 100%); }
+
+  header { position: sticky; top: 0; z-index: 50; height: 72px; display: flex; align-items: center;
+    padding: 0 120px; justify-content: space-between; background: rgba(3, 0, 20, 0.6);
+    backdrop-filter: blur(12px); border-bottom: 1px solid var(--stroke-soft); }
+  .brand { display: flex; align-items: center; gap: 10px; }
+  .logo { width: 34px; height: 34px; border-radius: 10px; background: var(--grad);
+    display: flex; align-items: center; justify-content: center; }
+  .logo svg { width: 20px; height: 20px; }
+  .brand-name { font-size: 20px; font-weight: 700; }
+  nav { display: flex; gap: 32px; align-items: center; }
+  nav a { color: var(--text-2); text-decoration: none; font-size: 15px; transition: color .2s; }
+  nav a:hover, nav a.active { color: var(--cyan); }
+  .btn-cta { background: var(--grad); color: #fff; border: none; cursor: pointer;
+    padding: 12px 24px; border-radius: 99px; font-size: 15px; font-weight: 600;
+    font-family: inherit; transition: transform .2s, box-shadow .2s; }
+  .btn-cta:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(46,167,255,0.35); }
+
+  .hero { text-align: center; padding: 120px 120px 90px; display: flex; flex-direction: column; align-items: center; gap: 28px; }
+  .badge { display: inline-flex; align-items: center; gap: 8px; padding: 8px 16px; border-radius: 99px;
+    font-size: 13px; font-weight: 600; color: var(--cyan); letter-spacing: .04em;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(46,167,255,0.5); }
+  .headline { display: flex; flex-direction: column; gap: 8px; }
+  .headline h1 { font-size: 62px; font-weight: 700; letter-spacing: -0.02em; }
+  .headline h2 { font-size: 62px; font-weight: 700; letter-spacing: -0.02em;
+    background: var(--grad); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .sub { font-size: 20px; color: rgba(255,255,255,0.72); max-width: 720px; }
+  .cta-row { display: flex; gap: 16px; }
+  .btn-primary { background: var(--grad); color: #fff; border: none; cursor: pointer;
+    padding: 15px 30px; border-radius: 99px; font-size: 16px; font-weight: 600;
+    font-family: inherit; transition: transform .2s, box-shadow .2s; text-decoration: none; display: inline-flex; align-items: center; }
+  .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 10px 30px rgba(46,167,255,0.4); }
+  .btn-ghost { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.16);
+    color: #fff; cursor: pointer; padding: 15px 30px; border-radius: 99px; font-size: 16px;
+    font-weight: 600; font-family: inherit; transition: background .2s; text-decoration: none; display: inline-flex; align-items: center; }
+  .btn-ghost:hover { background: rgba(255,255,255,0.1); }
+
+  .preview-card { width: 760px; max-width: 100%; text-align: left;
+    background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
+    border-radius: 18px; padding: 28px; display: flex; flex-direction: column; gap: 18px; backdrop-filter: blur(8px); }
+  .card-top { display: flex; justify-content: space-between; align-items: center; }
+  .today-tag { display: flex; align-items: center; gap: 8px; color: var(--cyan); font-size: 13px; font-weight: 600; }
+  .today-tag .dot { width: 8px; height: 8px; border-radius: 99px; background: var(--cyan); }
+  .copy-btn { display: inline-flex; align-items: center; gap: 6px; cursor: pointer; padding: 7px 14px;
+    border-radius: 8px; font-size: 13px; font-family: inherit; color: #D6D6E8;
+    background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.14); transition: background .2s; }
+  .copy-btn:hover { background: rgba(255,255,255,0.12); }
+  .copy-btn.done { color: var(--green); border-color: rgba(19,222,186,0.4); }
+  .prompt-title { font-size: 24px; font-weight: 700; }
+  .prompt-body { font-size: 15px; color: rgba(255,255,255,0.7); line-height: 26px; }
+  .card-bottom { display: flex; justify-content: space-between; align-items: center; }
+  .scene-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+  .scene-tags span { padding: 5px 12px; border-radius: 99px; font-size: 12px; color: var(--text-2); background: rgba(255,255,255,0.06); }
+  .fav { font-size: 13px; color: var(--text-3); }
+
+  section { padding: 80px 120px; }
+  .sec-head { display: flex; justify-content: space-between; align-items: center; margin-bottom: 40px; }
+  .sec-head.col { flex-direction: column; align-items: flex-start; gap: 10px; }
+  .kicker { font-size: 14px; font-weight: 600; color: var(--cyan); letter-spacing: .08em; }
+  .sec-title { font-size: 36px; font-weight: 700; letter-spacing: -0.01em; }
+  .view-all { display: inline-flex; align-items: center; gap: 6px; color: var(--text-2); font-size: 15px; text-decoration: none; }
+  .view-all:hover { color: #fff; }
+
+  .grid { display: grid; gap: 24px; }
+  .grid-3 { grid-template-columns: repeat(3, 1fr); }
+  .card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.12);
+    border-radius: 16px; padding: 24px; display: flex; flex-direction: column; gap: 16px;
+    backdrop-filter: blur(6px); transition: transform .2s, border-color .2s, background .2s; }
+  .card:hover { transform: translateY(-4px); border-color: rgba(46,167,255,0.4); background: rgba(255,255,255,0.07); }
+  .card-top-row { display: flex; justify-content: space-between; align-items: center; }
+  .icon-box { width: 40px; height: 40px; border-radius: 12px; background: rgba(46,167,255,0.15);
+    display: flex; align-items: center; justify-content: center; font-size: 18px; font-weight: 700; color: var(--cyan); }
+  .mini-tag { padding: 5px 12px; border-radius: 99px; font-size: 12px; color: var(--text-2); background: rgba(255,255,255,0.06); }
+  .card h3 { font-size: 19px; font-weight: 700; }
+  .card p { font-size: 14px; color: rgba(255,255,255,0.66); line-height: 22px; }
+  .card-foot { display: flex; justify-content: space-between; align-items: center; margin-top: auto; }
+  .card-foot .fav { font-size: 13px; color: var(--text-3); }
+  .cat-card { height: 140px; flex-direction: row; align-items: center; gap: 16px; }
+  .cat-card .icon-box { width: 44px; height: 44px; font-size: 22px; flex-shrink: 0; }
+  .cat-info { display: flex; flex-direction: column; gap: 4px; }
+  .cat-info h3 { font-size: 20px; }
+  .cat-info span { font-size: 14px; color: var(--text-2); }
+  .mech-card .icon-box { margin-bottom: 4px; }
+  .mech-card h3 { font-size: 19px; }
+  .stat-bar { margin-top: 40px; display: grid; grid-template-columns: repeat(4, 1fr);
+    background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 18px; padding: 32px 40px; text-align: center; }
+  .stat-bar .num { font-family: "IBM Plex Mono", monospace; font-size: 40px; font-weight: 600; }
+  .stat-bar .lbl { font-size: 14px; color: var(--text-2); margin-top: 8px; }
+
+  footer { padding: 56px 120px 40px; }
+  .divider { height: 1px; background: rgba(255,255,255,0.08); margin-bottom: 40px; }
+  .foot-top { display: flex; justify-content: space-between; gap: 40px; flex-wrap: wrap; }
+  .brand-block { display: flex; flex-direction: column; gap: 12px; max-width: 280px; }
+  .brand-row { display: flex; align-items: center; gap: 10px; }
+  .foot-logo { width: 32px; height: 32px; border-radius: 10px; background: var(--grad);
+    display: flex; align-items: center; justify-content: center; font-weight: 700; font-size: 16px; }
+  .foot-name { font-size: 18px; font-weight: 700; }
+  .slogan { font-size: 14px; color: rgba(255,255,255,0.6); line-height: 22px; }
+  .link-cols { display: flex; gap: 64px; flex-wrap: wrap; }
+  .link-col { display: flex; flex-direction: column; gap: 14px; }
+  .link-col .col-title { font-size: 14px; font-weight: 600; color: #fff; }
+  .link-col a { font-size: 14px; color: var(--text-2); text-decoration: none; transition: color .2s; }
+  .link-col a:hover { color: #fff; }
+  .foot-bottom { display: flex; justify-content: space-between; margin-top: 40px; color: var(--text-3); font-size: 13px; flex-wrap: wrap; gap: 8px; }
+
+  @media (max-width: 1024px) {
+    header, .hero, section, footer { padding-left: 40px; padding-right: 40px; }
+    nav { display: none; }
+    .headline h1, .headline h2 { font-size: 44px; }
+    .grid-3 { grid-template-columns: repeat(2, 1fr); }
+  }
+  @media (max-width: 680px) {
+    .hero { padding: 80px 20px 60px; }
+    section, footer { padding: 60px 20px; }
+    header { padding: 0 20px; }
+    .headline h1, .headline h2 { font-size: 34px; }
+    .grid-3 { grid-template-columns: 1fr; }
+    .stat-bar { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+    .preview-card { padding: 20px; }
+    .cta-row { flex-direction: column; width: 100%; }
+    .cta-row a { text-align: center; justify-content: center; }
+    .sec-head { flex-direction: column; align-items: flex-start; gap: 16px; }
+  }
+</style>
+</head>
+<body>
+  <div class="aurora"><span class="a-cyan"></span><span class="a-purple"></span><span class="a-green"></span></div>
+  <div class="dots"></div>
+
+  <header>
+    <div class="brand">
+      <div class="logo"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l2.4 7.6L22 12l-7.6 2.4L12 22l-2.4-7.6L2 12l7.6-2.4L12 2z" fill="#fff"/></svg></div>
+      <span class="brand-name">每日一策</span>
+    </div>
+    <nav>
+      <a href="#top" class="active">首页</a>
+      <a href="#today">今日精选</a>
+      <a href="#cat">分类</a>
+      <a href="#mech">更新机制</a>
+      <a href="#about">关于</a>
+    </nav>
+    <button class="btn-cta" onclick="document.getElementById('today').scrollIntoView()">获取今日提示词</button>
+  </header>
+
+  <div id="top"></div>
+  <div class="hero">
+    <span class="badge">每日更新 · 第 365 天</span>
+    <div class="headline">
+      <h1>每天一条好提示词</h1>
+      <h2>让 AI 听你的话</h2>
+    </div>
+    <p class="sub">精选经典、实用的 AI 提示词，每日更新，复制即用。</p>
+    <div class="cta-row">
+      <a class="btn-primary" href="#today">获取今日提示词</a>
+      <a class="btn-ghost" href="#cat">浏览全部分类</a>
+    </div>
+
+    <!-- 今日预览卡：由数据驱动 -->
+    <div class="preview-card" id="preview-card">
+      <div class="card-top">
+        <div class="today-tag"><span class="dot"></span><span id="preview-date">今日精选</span></div>
+        <button class="copy-btn" id="preview-copy">复制</button>
+      </div>
+      <div class="prompt-title" id="preview-title">加载中…</div>
+      <div class="prompt-body" id="preview-body"></div>
+      <div class="card-bottom">
+        <div class="scene-tags" id="preview-tags"></div>
+        <div class="fav" id="preview-fav"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 今日精选：由数据驱动 -->
+  <section id="today">
+    <div class="sec-head">
+      <div>
+        <div class="kicker">今日精选</div>
+        <div class="sec-title">更多今日好提示词</div>
+      </div>
+      <a class="view-all" href="#cat">查看全部 →</a>
+    </div>
+    <div class="grid grid-3" id="today-grid"></div>
+  </section>
+
+  <section id="cat">
+    <div class="sec-head col">
+      <div class="kicker">分类浏览</div>
+      <div class="sec-title">按场景找提示词</div>
+    </div>
+    <div class="grid grid-3">
+      <a class="card cat-card" href="#today"><div class="icon-box">写</div><div class="cat-info"><h3>写作</h3><span>128 条经典提示词</span></div></a>
+      <a class="card cat-card" href="#today"><div class="icon-box">码</div><div class="cat-info"><h3>编程</h3><span>96 条经典提示词</span></div></a>
+      <a class="card cat-card" href="#today"><div class="icon-box">画</div><div class="cat-info"><h3>绘画</h3><span>74 条经典提示词</span></div></a>
+      <a class="card cat-card" href="#today"><div class="icon-box">办</div><div class="cat-info"><h3>办公</h3><span>152 条经典提示词</span></div></a>
+      <a class="card cat-card" href="#today"><div class="icon-box">译</div><div class="cat-info"><h3>翻译</h3><span>63 条经典提示词</span></div></a>
+      <a class="card cat-card" href="#today"><div class="icon-box">营</div><div class="cat-info"><h3>营销</h3><span>110 条经典提示词</span></div></a>
+    </div>
+  </section>
+
+  <section id="mech">
+    <div class="sec-head col">
+      <div class="kicker">为什么每天来</div>
+      <div class="sec-title">经典、实用，且每日更新</div>
+    </div>
+    <div class="grid grid-3">
+      <div class="card mech-card"><div class="icon-box">新</div><h3>每日更新</h3><p>每天 0 点按日期推送一条精选提示词，365 天不间断，打开就有新收获。</p></div>
+      <div class="card mech-card"><div class="icon-box">精</div><h3>人工精选</h3><p>编辑团队逐条实测，只保留经典、能直接复制上手的提示词。</p></div>
+      <div class="card mech-card"><div class="icon-box">全</div><h3>覆盖全场景</h3><p>写作、编程、绘画、办公、翻译、营销，常用场景一个不落。</p></div>
+    </div>
+    <div class="stat-bar">
+      <div><div class="num">623</div><div class="lbl">累计提示词</div></div>
+      <div><div class="num">8.2k</div><div class="lbl">日均访问</div></div>
+      <div><div class="num">1.2k</div><div class="lbl">平均收藏</div></div>
+      <div><div class="num">365</div><div class="lbl">更新天数</div></div>
+    </div>
+  </section>
+
+  <footer id="about">
+    <div class="divider"></div>
+    <div class="foot-top">
+      <div class="brand-block">
+        <div class="brand-row"><div class="foot-logo">策</div><span class="foot-name">每日一策</span></div>
+        <p class="slogan">每天一条好提示词，让 AI 听你的话。</p>
+      </div>
+      <div class="link-cols">
+        <div class="link-col"><div class="col-title">产品</div><a href="#today">今日精选</a><a href="#cat">全部分类</a><a href="#mech">更新机制</a></div>
+        <div class="link-col"><div class="col-title">资源</div><a href="#today">提示词模板</a><a href="#mech">使用指南</a><a href="#about">开放 API</a></div>
+        <div class="link-col"><div class="col-title">关于</div><a href="#about">团队介绍</a><a href="#about">联系我们</a><a href="#about">隐私政策</a></div>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>2026 每日一策 · 让 AI 更好用</span>
+      <span>微信公众号 · 小红书 · X</span>
+    </div>
+  </footer>
+
+  <script>
+    // ===== 数据源配置 =====
+    // 默认读取同目录 prompts.json；如需对接"会每日更新的外部接口"，把 PROMPTS_URL 换成该接口地址即可（需支持 CORS）。
+    var PROMPTS_URL = 'prompts.json';
+    var REFRESH_MS = 60000; // 轮询间隔，适配外部会变的接口；本地静态数据不变则无视觉变化
+
+    // 内置 fallback（JSON 拉取失败时使用）
+    var FALLBACK = [
+      { title: "结构化会议纪要生成器", body: "你是一名资深会议记录专家。请将以下会议转写整理为结构化纪要：①会议主题与决议 ②待办事项（负责人+截止时间）③争议点与风险 ④一句话总结。输出用中文，控制在 400 字内。", tags: ["会议","总结","办公"], fav: "1.2k" },
+      { title: "爆款小红书文案", body: "你是资深种草文案专家，按「痛点+场景+利益+行动」结构，为{产品}写 3 条文案，每条带吸睛标题。", tags: ["写作"], fav: "892" },
+      { title: "代码审查员", body: "你是一名严谨的代码审查专家，指出{代码}的潜在 Bug、安全隐患与可维护性建议，按严重程度排序输出。", tags: ["编程"], fav: "1.4k" },
+      { title: "电影感插画咒语", body: "生成一张{主题}插画，电影级光影、低饱和高级色、35mm 胶片质感，主体占画面 60%，留白克制。", tags: ["绘画"], fav: "2.1k" }
+    ];
+
+    function todayStr() {
+      var d = new Date();
+      var m = String(d.getMonth() + 1).padStart(2, '0');
+      var day = String(d.getDate()).padStart(2, '0');
+      return d.getFullYear() + '-' + m + '-' + day;
+    }
+    // 日期种子：同一天稳定，跨天变化
+    function dayIndex(str, len) {
+      var h = 0;
+      for (var i = 0; i < str.length; i++) { h = (h * 31 + str.charCodeAt(i)) >>> 0; }
+      return h % len;
+    }
+    function esc(s) { return String(s).replace(/[&<>]/g, function (c) { return { '&':'&amp;','<':'&lt;','>':'&gt;' }[c]; }); }
+
+    function renderPreview(p) {
+      document.getElementById('preview-date').textContent = '今日精选 · ' + todayStr();
+      document.getElementById('preview-title').textContent = p.title;
+      document.getElementById('preview-body').textContent = p.body;
+      document.getElementById('preview-fav').textContent = p.fav + ' 人收藏';
+      document.getElementById('preview-tags').innerHTML = (p.tags || []).map(function (t) { return '<span>' + esc(t) + '</span>'; }).join('');
+      var btn = document.getElementById('preview-copy');
+      btn.setAttribute('data-copy', p.body);
+    }
+    function renderGrid(list, startIdx) {
+      var grid = document.getElementById('today-grid');
+      var html = '';
+      for (var i = 0; i < 3; i++) {
+        var p = list[(startIdx + i) % list.length];
+        var catMap = { '写作':'写', '编程':'码', '绘画':'画', '办公':'办', '翻译':'译', '营销':'营' };
+        var ic = (p.tags && p.tags[0] && catMap[p.tags[0]]) ? catMap[p.tags[0]] : '策';
+        html += '<div class="card">' +
+          '<div class="card-top-row"><div class="icon-box">' + ic + '</div><span class="mini-tag">' + esc((p.tags && p.tags[0]) || '精选') + '</span></div>' +
+          '<h3>' + esc(p.title) + '</h3>' +
+          '<p>' + esc(p.body) + '</p>' +
+          '<div class="card-foot"><button class="copy-btn" data-copy="' + esc(p.body) + '">复制</button><span class="fav">' + esc(p.fav) + ' 收藏</span></div>' +
+          '</div>';
+      }
+      grid.innerHTML = html;
+    }
+
+    function bindCopy() {
+      document.querySelectorAll('.copy-btn').forEach(function (btn) {
+        btn.onclick = function () {
+          var text = btn.getAttribute('data-copy');
+          navigator.clipboard.writeText(text).then(function () {
+            var old = btn.textContent; btn.textContent = '已复制'; btn.classList.add('done');
+            setTimeout(function () { btn.textContent = old; btn.classList.remove('done'); }, 1500);
+          }).catch(function () {
+            btn.textContent = '复制失败'; setTimeout(function () { btn.textContent = '复制'; }, 1500);
+          });
+        };
+      });
+    }
+
+    function loadPrompts() {
+      fetch(PROMPTS_URL).then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
+        .then(function (list) { apply(list); })
+        .catch(function () { apply(FALLBACK); });
+    }
+    function apply(list) {
+      if (!list || !list.length) list = FALLBACK;
+      var idx = dayIndex(todayStr(), list.length);
+      renderPreview(list[idx]);
+      renderGrid(list, idx);
+      bindCopy();
+    }
+
+    loadPrompts();
+    setInterval(loadPrompts, REFRESH_MS);
+
+    // 导航高亮
+    var links = document.querySelectorAll('nav a');
+    links.forEach(function (a) {
+      a.addEventListener('click', function () {
+        links.forEach(function (x) { x.classList.remove('active'); });
+        a.classList.add('active');
+      });
+    });
+  </script>
+</body>
+</html>

@@ -1,0 +1,41 @@
+# daily-prompts.yml —— 每日 0 点（北京时间）自动刷新提示词数据源
+# 用法：
+# 1. 把整个 meiriyice/ 目录推到你的 GitHub 仓库（如 owner/meiriyice）。
+# 2. 在仓库 Settings → Actions → General 中，将 "Workflow permissions" 设为 "Read and write"。
+# 3. 把 index.html 的 PROMPTS_URL 改为：
+#    https://cdn.jsdelivr.net/gh/<owner>/<repo>@main/prompts.daily.json
+# 4. 之后每天北京时间 0 点，本 Action 会运行 gen.js 重新生成 prompts.daily.json 并自动提交，
+#    站点下次刷新即拿到当天的新精选（纯静态、零服务器、零密钥）。
+
+name: Daily Prompts Refresh
+on:
+  schedule:
+    - cron: '0 16 * * *'   # UTC 16:00 = 北京时间次日 0:00
+  workflow_dispatch: {}    # 支持手动触发测试
+
+permissions:
+  contents: write
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+      - name: Generate daily prompts
+        run: node gen.js
+      - name: Commit if changed
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add prompts.daily.json
+          if git diff --cached --quiet; then
+            echo "no change"
+          else
+            git commit -m "chore: daily prompts $(date +%F)"
+            git push
+          fi
