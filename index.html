@@ -278,9 +278,12 @@
 
   <script>
     // ===== 数据源配置 =====
-    // 默认读取同目录 prompts.json；如需对接"会每日更新的外部接口"，把 PROMPTS_URL 换成该接口地址即可（需支持 CORS）。
-    var PROMPTS_URL = 'prompts.json';
-    var REFRESH_MS = 60000; // 轮询间隔，适配外部会变的接口；本地静态数据不变则无视觉变化
+    // 默认读取同目录 prompts.json（30 条全场景经典库），前端按当天日期种子轮播，天然“每天不同、经典实用”，零后端即可。
+    // 真·每日新增内容（由 GitHub Action 等外部定时重写数据源）：把 DAILY_SOURCE 改为 jsDelivr 链接，例：
+    //   https://cdn.jsdelivr.net/gh/<你的用户名>/<仓库名>@main/prompts.daily.json
+    var DAILY_SOURCE = 'https://cdn.jsdelivr.net/gh/chenminrun/meiriyice@main/prompts.daily.json';
+    var PROMPTS_URL = (DAILY_SOURCE || 'prompts.json');
+    var REFRESH_MS = 60000; // 轮询间隔；接外部会变的接口后，站点按此间隔取最新
 
     // 内置 fallback（JSON 拉取失败时使用）
     var FALLBACK = [
@@ -347,7 +350,15 @@
     function loadPrompts() {
       fetch(PROMPTS_URL).then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
         .then(function (list) { apply(list); })
-        .catch(function () { apply(FALLBACK); });
+        .catch(function () {
+          if (DAILY_SOURCE && PROMPTS_URL !== 'prompts.json') {
+            fetch('prompts.json').then(function (r) { if (!r.ok) throw new Error('bad'); return r.json(); })
+              .then(function (list) { apply(list); })
+              .catch(function () { apply(FALLBACK); });
+          } else {
+            apply(FALLBACK);
+          }
+        });
     }
     function apply(list) {
       if (!list || !list.length) list = FALLBACK;
